@@ -58,6 +58,7 @@ CLASS lcl_digest IMPLEMENTATION.
     CONCATENATE iv_method ':' iv_uri INTO lv_str.
     DATA(lv_ha2) = md5( lv_str ).
 
+* todo, nc = 00000001
     CONCATENATE lv_ha1 ':' iv_nonce ':00000001:' iv_cnonse ':' iv_qop ':' lv_ha2 INTO lv_str.
     rv_response = md5( lv_str ).
 
@@ -106,22 +107,22 @@ CLASS ltcl_digest IMPLEMENTATION.
 
   METHOD test01.
 
-*    DATA: lv_response TYPE string.
-*
-*
-*    lv_response = lcl_digest=>run(
-*      iv_qop      = 'auth'
-*      iv_realm    = 'Gerrit Code Review'
-*      iv_nonce    = '1vLNacdTq1FWk2ac6PTHC8RiB1Pz7DcWAY0YfQ==$'
-*      iv_username = 'admin'
-*      iv_uri      = '/new_project/info/refs?service=git-receive-pack'
-*      iv_method   = 'GET'
-*      iv_cnonse   = 'ZmU2YjcwOWFlZGNkYjk5NDAwMDgwMmQwMDAwN2IzMzc='
-*      iv_password = 'password' ).
-*
-*    cl_abap_unit_assert=>assert_equals(
-*      act = lv_response
-*      exp = '87fbab11a72cf0900ec3ea2c0a597850' ).
+    DATA: lv_response TYPE string.
+
+
+    lv_response = lcl_digest=>run(
+      iv_qop      = 'auth'
+      iv_realm    = 'Gerrit Code Review'
+      iv_nonce    = '1vLNacdTq1FWk2ac6PTHC8RiB1Pz7DcWAY0YfQ==$'
+      iv_username = 'admin'
+      iv_uri      = '/new_project/info/refs?service=git-receive-pack'
+      iv_method   = 'GET'
+      iv_cnonse   = 'ZmU2YjcwOWFlZGNkYjk5NDAwMDgwMmQwMDAwN2IzMzc='
+      iv_password = 'secret' ).
+
+    cl_abap_unit_assert=>assert_equals(
+      act = lv_response
+      exp = '87fbab11a72cf0900ec3ea2c0a597850' ).
 
   ENDMETHOD.
 
