@@ -49,18 +49,10 @@ CLASS lcl_digest IMPLEMENTATION.
 
   METHOD run.
 
-    DATA: lv_str TYPE string.
-
-
-    CONCATENATE iv_username ':' iv_realm ':' iv_password INTO lv_str.
-    DATA(lv_ha1) = md5( lv_str ).
-
-    CONCATENATE iv_method ':' iv_uri INTO lv_str.
-    DATA(lv_ha2) = md5( lv_str ).
-
+    DATA(lv_ha1) = md5( |{ iv_username }:{ iv_realm }:{ iv_password }| ).
+    DATA(lv_ha2) = md5( |{ iv_method }:{ iv_uri }| ).
 * todo, nc = 00000001
-    CONCATENATE lv_ha1 ':' iv_nonce ':00000001:' iv_cnonse ':' iv_qop ':' lv_ha2 INTO lv_str.
-    rv_response = md5( lv_str ).
+    rv_response = md5( |{ lv_ha1 }:{ iv_nonce }:00000001:{ iv_cnonse }:{ iv_qop }:{ lv_ha2 }| ).
 
   ENDMETHOD.
 
